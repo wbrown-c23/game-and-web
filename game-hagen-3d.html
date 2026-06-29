@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Escape Hagen 3D</title>
+
+<style>
+  body {
+    margin: 0;
+    overflow: hidden;
+    background: black;
+	position: relative;
+  }
+
+  #gameContainer {
+	position: absolute;
+	top: 0;
+	left: 0;
+    width: 100vw;
+    height: 100vh;
+	z-index: 0;
+  }
+
+	#startScreen {
+	  position: fixed;
+	  inset: 0;
+	  background: black;
+	  color: white;
+
+	  display: flex;
+	  flex-direction: column;
+	  justify-content: center;
+	  align-items: center;
+
+	  z-index: 9999;
+	}
+
+	#startScreen h1 {
+	  font-size: 48px;
+	  margin-bottom: 20px;
+	  letter-spacing: 2px;
+	}
+
+	#startScreen button {
+	  padding: 12px 24px;
+	  font-size: 18px;
+	  cursor: pointer;
+	  border: none;
+	  background: white;
+	  color: black;
+	}
+
+  button {
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+
+	#deathScreen {
+	  position: absolute;
+	  top: 0;
+	  left: 0;
+	  width: 100%;
+	  height: 100%;
+	  background: rgba(0,0,0,0.9);
+	  color: white;
+	  display: none;
+	  justify-content: center;
+	  align-items: center;
+	  flex-direction: column;
+	  z-index: 2000;
+	}
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+</head>
+
+<body>
+
+<!-- START SCREEN -->
+<div id="startScreen">
+  <h1>Escape Hagen 3D</h1>
+  <button onclick="startGame()">Starten</button>
+</div>
+
+<!-- GAME -->
+<div id="gameContainer"></div>
+
+<!-- DEATH SCREEN -->
+<div id="deathScreen">
+  <h1>Du wurdest von Hagen erschlagen!<h1>
+  <button onclick="location.reload()">Wiederholen</button>
+</div>
+
+<script>
+let gameRunning = false;
+
+/* START GAME */
+function startGame() {
+  document.getElementById("startScreen").style.display = "none";
+  gameRunning = true;
+}
+
+/* SCENE */
+let scene = new THREE.Scene();
+scene.fog = new THREE.Fog(0x000000, 10, 60);
+
+let camera = new THREE.PerspectiveCamera(
+  75,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  1000
+);
+
+camera.position.set(0, 10, 15);
+
+let renderer = new THREE.WebGLRenderer();
+
+const container = document.getElementById("gameContainer");
+renderer.setSize(container.clientWidth, container.clientHeight);
+container.appendChild(renderer.domElement);
+
+/* GROUND */
+let ground = new THREE.Mesh(
+  new THREE.PlaneGeometry(50, 50),
+  new THREE.MeshBasicMaterial({ color: 0x222222, wireframe: true })
+);
+ground.rotation.x = -Math.PI / 2;
+scene.add(ground);
+
+/* PLAYER */
+let player = new THREE.Mesh(
+  new THREE.BoxGeometry(1, 1, 1),
+  new THREE.MeshBasicMaterial({ color: 0x00aaff })
+);
+player.position.y = 0.5;
+scene.add(player);
+
+/* HAGEN */
+let hagen = new THREE.Mesh(
+  new THREE.BoxGeometry(1.5, 1.5, 1.5),
+  new THREE.MeshBasicMaterial({ color: 0xff0000 })
+);
+scene.add(hagen);
+
+/* SPEARS */
+let spears = [];
+
+function spawnSpear() {
+  let spear = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.1, 0.1, 2),
+    new THREE.MeshBasicMaterial({ color: 0xffffff })
+  );
+
+  spear.position.copy(hagen.position);
+
+  let dir = new THREE.Vector3()
+    .subVectors(player.position, hagen.position)
+    .normalize();
+
+  spear.velocity = dir.multiplyScalar(0.3);
+
+  scene.add(spear);
+  spears.push(spear);
+}
+
+/* CONTROLS */
+let keys = {};
+
+window.addEventListener("keydown", (e) => {
+  keys[e.code] = true;
+});
+
+window.addEventListener("keyup", (e) => {
+  keys[e.code] = false;
+});
+
+/* PLAYER MOVE */
+function updatePlayer() {
+  if (!gameRunning) return;
+
+  if (keys["ArrowUp"]) player.position.z -= 0.2;
+  if (keys["ArrowDown"]) player.position.z += 0.2;
+  if (keys["ArrowLeft"]) player.position.x -= 0.2;
+  if (keys["ArrowRight"]) player.position.x += 0.2;
+}
+
+/* HAGEN ORBIT */
+let angle = 0;
+
+function updateHagen() {
+  angle += 0.01;
+  hagen.position.x = Math.cos(angle) * 10;
+  hagen.position.z = Math.sin(angle) * 10;
+}
+
+/* GAME OVER */
+function gameOver() {
+  gameRunning = false;
+  document.getElementById("deathScreen").style.display = "flex";
+}
+
+/* SPEARS UPDATE */
+function updateSpears() {
+  for (let i = 0; i < spears.length; i++) {
+    spears[i].position.add(spears[i].velocity);
+
+    if (spears[i].position.distanceTo(player.position) < 1) {
+      gameOver();
+    }
+  }
+}
+
+/* SPAWN LOOP */
+setInterval(() => {
+  if (gameRunning) spawnSpear();
+}, 800);
+
+/* MAIN LOOP */
+function animate() {
+  requestAnimationFrame(animate);
+
+  if (gameRunning) {
+    updatePlayer();
+    updateHagen();
+    updateSpears();
+  }
+
+  camera.position.x = player.position.x;
+  camera.position.z = player.position.z + 10;
+  camera.lookAt(player.position);
+
+  renderer.render(scene, camera);
+}
+
+animate();
+
+/* RESIZE */
+window.addEventListener("resize", () => {
+  const container = document.getElementById("gameContainer");
+
+  camera.aspect = container.clientWidth / container.clientHeight;
+  camera.updateProjectionMatrix();
+
+  renderer.setSize(container.clientWidth, container.clientHeight);
+});
+</script>
+
+</body>
+</html>

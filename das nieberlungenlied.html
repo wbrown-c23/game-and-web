@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Das Nibelungenlied</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style> /* CSS */
+        body {
+            margin: 0;
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background-color: #226e2f;
+            color: #111;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 15px 20px;
+            text-align: center;
+        }
+
+        nav {
+            background-color: #184F22;
+            padding: 10px 20px;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin-right: 20px;
+            font-size: 18px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            padding: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #669900;
+            box-shadow: 0 0 5px rgba(1,0,0,5.1);
+        }
+
+        h1, h2, h3 {
+            margin-top: 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px 0;
+            margin-top: 20px;
+            background-color: #184F22;
+            color: #fff;
+            font-size: 15px;
+        }
+		
+		.quiz-box {
+			background-color: #226e2f;
+			padding: 20px;
+		}
+
+		#game-container {
+			width:600px;
+			height:400px;
+			margin:auto;
+			background:#d2b48c;
+			border:4px solid #333;
+			position:relative;
+			overflow:hidden;
+		}
+		
+		#player{
+			width:60px;
+			height:80px;
+			position:absolute;
+			left:275px;
+			top:310px;
+		}
+		
+		#hagen{
+			width:60px;
+			height:80px;
+			position:absolute;
+			left:275px;
+			top:20px;
+		}
+		
+		.spear{
+			position:absolute;
+			width:6px;
+			height:25px;
+			background:brown;
+		}
+		
+		@keyframes flash {
+			0%   { opacity: 1; }
+			50%  { opacity: 0.1; }
+			100% { opacity: 1; }
+		}
+		
+		html {
+			scroll-behavior: smooth;
+		}
+		
+		.top-button {
+			position: fixed;
+			bottom: 20px;
+			right: 20px;
+			display: inline-block;
+			margin: 20px auto;
+			padding: 10px 15px;
+			background-color: #333;
+			color: white;
+			text-decoration: none;
+			border-radius: 5px;
+		}
+
+		.top-button:hover {
+			background-color: #874500;
+		}
+		
+        .btn {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #333;
+            color: #fff;
+            text-decoration: none;
+            border: none;
+			outline: none;
+			border-radius: 0;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            background-color: #874500;
+        }
+		
+		.audio-element-right {
+			text-align: right;
+		}
+		
+		#battleMusic {
+			display: none;
+		}
+		
+    </style>
+</head>
+<body>
+
+<header>
+	<div id="top">
+		<br>
+		<h1>Das Nibelungenlied</h1>
+		<p><i>Eine Sage</i></p>
+	</div>
+</header>
+
+<nav>
+    <a href="#home">Startseite</a>
+    <a href="#games">Spiele</a>
+    <a href="#story">Geschichte</a>
+	<a href="#credits">Mitwerkende</a>
+</nav>
+
+<main>
+    <section id="home">
+		<h2>Willkommen!</h2>
+		<p>
+			Tauche ein in eines der größten Epen des mittelalterlichen Europas; eine Geschichte
+			von Helden, Drachen, Loyalität, Verrat und dem tragischen Untergang von Königreichen.
+			Diese Seite erkundet die legendäre Erzählung von Siegfried dem Drachentöter,
+			Kriemhilds unerschütterlichem Willen und dem verheerenden Konflikt zwischen Ehre und Rache.
+			Ob du das Epos studieren, seine Figuren entdecken oder seine historischen Wurzeln erforschen möchtest,
+			deine Reise in das Nibelungenlied beginnt jetzt.
+		</p>
+		<a href="#story" class="btn">Zur Geschichte</a>
+		<p>Das Nibelungenlied inspirierte den deutschen Komponisten Richard Wagner zu seinem Opernzyklus Der 
+		Ring des Nibelungen. Wagner übernahm Figuren wie Siegfried, Brünnhilde und die Nibelungen sowie Themen wie 
+		Macht, Verrat, Liebe und den Kampf um einen wertvollen Schatz. Er veränderte jedoch die ursprüngliche Geschichte 
+		und kombinierte sie mit anderen germanischen und nordischen Mythen. Dadurch entstand eine neue Handlung, in der 
+		ein magischer Ring eine zentrale Rolle spielt. Obwohl Wagners Opern nicht direkt dem Nibelungenlied folgen, basiert 
+		ein großer Teil ihrer Inspiration auf dessen Figuren, Motiven und Legenden.</p>
+		<br>
+		Hören Sie sich hier den "Ritt der Walküren" aus Wagners "Die Walküre" 
+		(die zweite der vier Opern, aus denen der Ring des Nibelungen besteht) an:
+		<div class="audio-element-right">
+			<audio controls>
+			  <source src="https://cdn.jsdelivr.net/gh/wbrown-c23/website-audio/Die%20Walk%C3%BCre%2C%20WWV%2086B%20-%20Ride%20of%20the%20Valkyries.mp3" type="audio/mpeg">
+			</audio>
+
+		</div>
+    </section>
+
+<hr>
+
+<section id="games">
+<h2>Spiele</h2>
+	<h3>Quiz</h3>
+    <p>
+        Glaubst du, die Geschichte gut zu kennen? Teste dein Wissen!
+    </p>
+
+    <div class="quiz-box" id="quiz-box" style="padding:20px; border-radius:8px; box-shadow:0 0 5px rgba(0,0,0,0.2); max-width:600px; margin:auto;">
+        <h3 id="question">Frage wird geladen...</h3>
+
+        <div id="options"></div>
+        
+        <p id="feedback" style="display:none; margin-top:15px; font-weight:bold;"></p>
+
+        <button id="next-question" class="btn" style="display:none; margin-top:20px;">Nächste Frage</button>
+    </div>
+</section>
+<br>
+<section id="wer-bin-ich">
+    <h3>Wer bin ich?</h3>
+    <p>Lies die Hinweise und versuche, die richtige Figur zu erraten.</p>
+
+    <div class="quiz-box" style="max-width:600px; margin:auto;">
+        <h3 id="clue-title">Hinweis 1</h3>
+
+        <p id="clue-text"></p>
+
+        <div id="guess-buttons"></div>
+
+        <p id="guess-feedback" style="display:none; font-weight:bold;"></p>
+
+        <button id="next-character" class="btn" style="display:none;">
+            Nächste Figur
+        </button>
+    </div>
+</section>
+<br>
+<section id="escape-hagen">
+    <h3>Entkomme Hagen</h3>
+
+    <p>Hagen kennt deine Schwachstelle! Weiche seinen Speeren!</p>
+	<p>Verwende die Pfeiltasten, um Siegfried zu bewegen.</p>
+
+    <div id="game-container">
+        <img id="player" src="https://raw.githubusercontent.com/wbrown-c23/website-image/main/siegfried.png" alt="Siegfried">
+        <img id="hagen" src="https://raw.githubusercontent.com/wbrown-c23/website-image/main/hagen.png" alt="Hagen">
+    </div>
+	<audio id="battleMusic" loop>
+		<source src="https://raw.githubusercontent.com/wbrown-c23/website-audio/refs/heads/main/rotv-8bit_01.m4a" type="audio/mpeg">
+	</audio>
+	<audio id="deathSound" preload="auto">
+		<source src="https://raw.githubusercontent.com/wbrown-c23/website-audio/main/freesound_community-videogame-death-sound-43894.mp3" type="audio/mpeg">
+	</audio>
+	<audio id="winSound" preload="auto">
+		<source src="https://raw.githubusercontent.com/wbrown-c23/website-audio/main/freesound_community-winsquare-6993.mp3" type="audio/mpeg">
+	</audio>
+    <br>
+    <button id="start-game" class="btn">
+        Spiel starten
+    </button>
+
+    <p id="game-message"></p>
+	<p id="warning" style="
+	display:none;
+	font-size:28px;
+	font-weight:bold;
+	color:darkred;
+	text-align:center;
+	animation: flash 0.4s infinite;
+	">
+	⚠ HAGEN WIRD WÜTEND! ⚠
+	</p>
+
+</section>
+<br>
+<section id="escape-hagen-3d">
+	<h3>Entkomme Hagen 3D</h3>
+	<p>!intro to game</p>
+	<button onclick="location.href='game-hagen-3d.html'">
+	  Play Escape Hagen 3D
+	</button>
+</section>
+
+
+<script>
+// quiz javascript
+
+let current = 0;
+let score = 0;
+
+const quizData = [
+    {
+        question: "Wer ist der Drachentöter im Nibelungenlied?",
+        options: ["Gunther", "Siegfried", "Brunhild"],
+        answer: "Siegfried"
+    },
+    {
+        question: "Wer tötet Siegfried?",
+        options: ["Gunther", "Hagen", "Etzel"],
+        answer: "Hagen"
+    },
+    {
+        question: "Wem verhilft Siegfried dazu, Brunhild zu gewinnen?",
+        options: ["Brunhild", "Etzel", "Gunther"],
+        answer: "Gunther"
+    },
+	{
+		question: "Wo lebt Siegfried zu Beginn der Geschichte?",
+		options: ["In Worms", "In Xanten", "In Isenstein"],
+		answer: "In Xanten"
+	},
+	{
+		question: "Warum reist Siegfried nach Worms?",
+		options: ["Um Kriemhild zu heiraten", "Um Gunther herauszufordern", "Um einen Drachen zu suchen"],
+		answer: "Um Kriemhild zu heiraten"
+	},
+	{
+		question: "Wie hilft Siegfried Gunther, Brunhild zu gewinnen?",
+		options: ["Er kämpft unsichtbar mit Hilfe einer Tarnkappe", "Er schenkt Gunther einen Schatz", "Er überzeugt Brunhild mit einer Rede"],
+		answer: "Er kämpft unsichtbar mit Hilfe einer Tarnkappe"
+	},
+	{
+		question: "Was verleiht Siegfried Unsichtbarkeit?",
+		options: ["Eine Tarnkappe", "Ein Zauberschwert", "Ein Ring"],
+		answer: "Eine Tarnkappe"
+	},
+	{
+		question: "Warum wird Brunhild wütend auf Kriemhild?",
+		options: ["Kriemhild verspottet sie vor dem Dom", "Kriemhild stiehlt ihren Schmuck", "Kriemhild weigert sich, mit ihr zu sprechen"],
+		answer: "Kriemhild verspottet sie vor dem Dom"
+	},
+	{
+		question: "Welches Geheimnis verrät Kriemhild versehentlich?",
+		options: ["Dass Siegfried Gunther geholfen hat, Brunhild zu besiegen", "Wo der Nibelungenschatz versteckt ist", "Dass Hagen ein Verräter ist"],
+		answer: "Dass Siegfried Gunther geholfen hat, Brunhild zu besiegen"
+	},
+	{
+		question: "Wo befindet sich Siegfrieds einzige verwundbare Stelle?",
+		options: ["Zwischen seinen Schultern", "An seiner Brust", "An seinem Bein"],
+		answer: "Zwischen seinen Schultern"
+	},
+	{
+		question: "Wie erfährt Hagen von Siegfrieds verwundbarer Stelle?",
+		options: ["Kriemhild zeigt sie ihm auf Siegfrieds Gewand", "Gunther erzählt es ihm", "Brunhild verrät es ihm"],
+		answer: "Kriemhild zeigt sie ihm auf Siegfrieds Gewand"
+	},
+	{
+		question: "Wo wird Siegfried getötet?",
+		options: ["Während einer Jagd", "In der Burg von Worms", "Im Kampf gegen einen Drachen"],
+		answer: "Während einer Jagd"
+	},
+	{
+		question: "Mit welcher Waffe tötet Hagen Siegfried?",
+		options: ["Mit einem Speer", "Mit einem Schwert", "Mit einem Bogen"],
+		answer: "Mit einem Speer"
+	},
+];
+
+function loadQuestion() {
+    const q = quizData[current];
+    document.getElementById("question").textContent = q.question;
+
+    const optionsDiv = document.getElementById("options");
+    optionsDiv.innerHTML = "";
+
+    q.options.forEach(option => {
+        const btn = document.createElement("button");
+        btn.textContent = option;
+        btn.className = "btn";
+        btn.style.display = "block";
+        btn.style.margin = "10px 0";
+        btn.onclick = () => checkAnswer(option);
+        optionsDiv.appendChild(btn);
+    });
+
+    document.getElementById("feedback").style.display = "none";
+    document.getElementById("next-question").style.display = "none";
+}
+
+function checkAnswer(selected) {
+    const correct = quizData[current].answer;
+    const feedback = document.getElementById("feedback");
+
+    if (selected === correct) {
+        feedback.textContent = "Richtig!";
+        feedback.style.color = "white";
+        score++;
+    } else {
+        feedback.textContent = "Leider falsch. Die richtige Antwort ist " + correct + ".";
+        feedback.style.color = "white";
+    }
+
+    feedback.style.display = "block";
+    document.getElementById("next-question").style.display = "inline-block";
+
+    document.querySelectorAll("#options button").forEach(btn => btn.disabled = true);
+}
+
+function nextQuestion() {
+    current++;
+
+    if (current >= quizData.length) {
+        showFinalScore();
+    } else {
+        loadQuestion();
+    }
+}
+
+document.getElementById("next-question").onclick = nextQuestion;
+
+function showFinalScore() {
+    document.getElementById("question").textContent = 
+        "Quiz beendet! Du hast " + score + " von " + quizData.length + " Punkten erreicht.";
+
+    document.getElementById("options").innerHTML = "";
+    document.getElementById("feedback").style.display = "none";
+
+    const restartBtn = document.getElementById("next-question");
+    restartBtn.textContent = "Quiz neu starten";
+    restartBtn.style.display = "inline-block";
+
+    restartBtn.onclick = function() {
+		current = 0;
+		score = 0;
+		this.textContent = "Nächste Frage";
+
+		// Restore original next-question behaviour
+		this.onclick = nextQuestion;
+
+		loadQuestion();
+	};
+
+}
+
+loadQuestion();
+
+// wer bin ich javascript
+
+const characters = [
+{
+    name: "Siegfried",
+    clues: [
+        "Ich habe einen Drachen besiegt.",
+        "Ich wurde fast unverwundbar.",
+        "Ich liebe Kriemhild."
+    ]
+},
+{
+    name: "Kriemhild",
+    clues: [
+        "Ich bin die Schwester von Gunther.",
+        "Ich liebe Siegfried.",
+        "Ich verrate versehentlich sein Geheimnis."
+    ]
+},
+{
+    name: "Gunther",
+    clues: [
+        "Ich bin König von Burgund.",
+        "Ich möchte Brunhild heiraten.",
+        "Siegfried hilft mir mit einer Tarnkappe."
+    ]
+},
+{
+    name: "Brunhild",
+    clues: [
+        "Ich bin außergewöhnlich stark.",
+        "Ich stelle Freiern schwere Prüfungen.",
+        "Ich werde Königin von Burgund."
+    ]
+},
+{
+    name: "Hagen",
+    clues: [
+        "Ich bin ein treuer Ritter.",
+        "Ich erfahre Siegfrieds Schwachstelle.",
+        "Ich töte Siegfried."
+    ]
+}
+];
+
+let currentCharacter = 0;
+let currentClue = 0;
+
+function loadCharacter() {
+
+    const c = characters[currentCharacter];
+
+    document.getElementById("clue-title").textContent =
+        "Hinweis " + (currentClue + 1);
+
+    document.getElementById("clue-text").textContent =
+        c.clues[currentClue];
+
+    const buttons = document.getElementById("guess-buttons");
+    buttons.innerHTML = "";
+
+    characters.forEach(char => {
+
+        const btn = document.createElement("button");
+
+        btn.textContent = char.name;
+        btn.className = "btn";
+        btn.style.display = "block";
+        btn.style.margin = "10px 0";
+
+        btn.onclick = () => guess(char.name);
+
+        buttons.appendChild(btn);
+
+    });
+
+    document.getElementById("guess-feedback").style.display = "none";
+    document.getElementById("next-character").style.display = "none";
+
+}
+
+function guess(choice){
+
+    const correct = characters[currentCharacter].name;
+    const feedback = document.getElementById("guess-feedback");
+
+    if(choice === correct){
+
+        feedback.textContent = "Richtig, gut gemacht!";
+        feedback.style.color = "white";
+		document.querySelectorAll("#guess-buttons button").forEach(btn => btn.disabled = true);
+        document.getElementById("next-character").style.display="inline-block";
+
+    }else{
+
+        if(currentClue < 2){
+
+            currentClue++;
+
+            document.getElementById("clue-title").textContent =
+                "Hinweis " + (currentClue + 1);
+
+            document.getElementById("clue-text").textContent =
+                characters[currentCharacter].clues[currentClue];
+
+            feedback.textContent = "Nicht ganz. Hier ist ein weiterer Hinweis!";
+            feedback.style.color = "white";
+
+        }else{
+
+            feedback.textContent =
+                "Leider falsch! Die richtige Antwort ist " + correct + ".";
+
+            feedback.style.color = "white";
+			document.querySelectorAll("#guess-buttons button").forEach(btn => btn.disabled = true);
+            document.getElementById("next-character").style.display="inline-block";
+
+        }
+
+    }
+
+    feedback.style.display="block";
+
+}
+
+function nextCharacter(){
+
+    currentCharacter++;
+    currentClue = 0;
+
+    if(currentCharacter >= characters.length){
+
+        document.getElementById("clue-title").textContent =
+            "Geschafft!";
+
+        document.getElementById("clue-text").textContent =
+            "Du hast alle Figuren erraten!";
+
+        document.getElementById("guess-buttons").innerHTML = "";
+        document.getElementById("guess-feedback").style.display = "none";
+
+        const btn = document.getElementById("next-character");
+        btn.textContent = "Spiel neu starten";
+        btn.style.display = "inline-block";
+
+        btn.onclick = function(){
+
+            currentCharacter = 0;
+            currentClue = 0;
+
+            btn.textContent = "Nächste Figur";
+            btn.onclick = nextCharacter;
+
+            loadCharacter();
+
+        };
+
+    }else{
+
+        loadCharacter();
+
+    }
+
+}
+
+document.getElementById("next-character").onclick = nextCharacter;
+
+loadCharacter();
+
+// entkomme hagen javascript
+
+const player = document.getElementById("player");
+const hagen = document.getElementById("hagen");
+const game = document.getElementById("game-container");
+const startBtn = document.getElementById("start-game");
+const message = document.getElementById("game-message");
+const battleMusic = document.getElementById("battleMusic");
+const deathSound = document.getElementById("deathSound");
+const winSound = document.getElementById("winSound");
+const warning = document.getElementById("warning");
+
+let hardMode = false;
+
+let playerX = 275;
+let playerY = 310;
+
+const speed = 8;
+
+let elapsedTime = 0;
+
+let keys = {};
+
+let gameRunning = false;
+
+let hagenX = 280;
+let hagenY = 20;
+let hagenXDirection = 1;
+let hagenYDirection = 1;
+const hagenXSpeed = 2;
+const hagenYSpeed = 1.2;
+
+let gameTimer;
+let spearTimer;
+
+document.addEventListener("keydown", function(e){
+
+    if(gameRunning &&
+       ["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].includes(e.key)){
+        e.preventDefault();
+    }
+
+    keys[e.key] = true;
+
+});
+
+document.addEventListener("keyup", function(e){
+
+    if(gameRunning &&
+       ["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].includes(e.key)){
+        e.preventDefault();
+    }
+
+    keys[e.key] = false;
+
+});
+
+function movePlayer(){
+
+    if(!gameRunning) return;
+
+    if(keys["ArrowLeft"] && playerX > 0)
+        playerX -= speed;
+
+    if(keys["ArrowRight"] && playerX < 570)
+        playerX += speed;
+
+    if(keys["ArrowUp"] && playerY > 0)
+        playerY -= speed;
+
+    if(keys["ArrowDown"] && playerY < 370)
+        playerY += speed;
+
+    player.style.left = playerX + "px";
+    player.style.top = playerY + "px";
+	
+	// hagen
+	let currentHagenXSpeed = hagenXSpeed;
+
+	if (elapsedTime >= 30) {
+		currentHagenXSpeed = 3.5;
+	}
+
+	hagenX += currentHagenXSpeed * hagenXDirection;
+
+	if (hagenX <= 0 || hagenX >= 540) {
+		hagenXDirection *= -1;
+	}
+	if (elapsedTime >= 30) {
+
+		hagenY += hagenYSpeed * hagenYDirection;
+
+		if (hagenY <= 0 || hagenY >= 180) {
+			hagenYDirection *= -1;
+		}
+
+	}
+
+	hagen.style.left = hagenX + "px";
+	hagen.style.top = hagenY + "px";
+	
+// spears
+for(let i = spears.length - 1; i >= 0; i--){
+
+    const spear = spears[i];
+
+    let x = parseFloat(spear.style.left);
+    let y = parseFloat(spear.style.top);
+
+    x += spear.vx;
+    y += spear.vy;
+
+    spear.style.left = x + "px";
+    spear.style.top = y + "px";
+
+	
+    if(
+        x < playerX + 30 &&
+        x + 6 > playerX &&
+        y < playerY + 30 &&
+        y + 25 > playerY
+    ){
+        endGame(false);
+        return;
+    }
+
+    
+    if(x < -20 || x > 620 || y < -20 || y > 420){
+        spear.remove();
+        spears.splice(i,1);
+    }
+
+}
+    requestAnimationFrame(movePlayer);
+}
+
+let spears = [];
+
+function createSpear(angleOffset = 0) {
+
+    const spear = document.createElement("div");
+    spear.className = "spear";
+
+    const startX = hagenX + 30;
+	const startY = hagenY + 40;
+
+    spear.style.left = startX + "px";
+    spear.style.top = startY + "px";
+
+    const targetX = playerX + 15;
+    const targetY = playerY + 15;
+
+    const dx = targetX - startX;
+    const dy = targetY - startY;
+
+    const angle = Math.atan2(dy, dx) + angleOffset;
+
+    let spearSpeed = 4 + (elapsedTime * 0.08);
+		spear.vx = Math.cos(angle) * spearSpeed;
+		spear.vy = Math.sin(angle) * spearSpeed;
+
+    game.appendChild(spear);
+    spears.push(spear);
+
+}
+
+function endGame(win){
+
+    gameRunning = false;
+	
+	battleMusic.pause();
+	battleMusic.currentTime = 0;
+	if(!win){
+		deathSound.currentTime = 0;
+		deathSound.play();
+	}
+	
+    clearInterval(gameTimer);
+    clearInterval(spearTimer);
+
+    if(win){
+        message.textContent = "Du bist Hagen entkommen!";
+        message.style.color = "white";
+		winSound.currentTime = 0;
+		winSound.play();
+    }else{
+        message.textContent = "Oh nein! Hagen hat dich getötet!";
+        message.style.color = "darkred";
+    }
+
+    startBtn.disabled = false;
+}
+
+startBtn.onclick = function(){
+	
+	battleMusic.volume = 0.1;
+	battleMusic.currentTime = 0;
+	battleMusic.play();
+	
+    document.querySelectorAll("#game-container div").forEach(function(div){
+        if(div !== player && div !== hagen){
+            div.remove();
+        }
+    });
+	
+	spears = [];
+
+    playerX = 275;
+    playerY = 310;
+
+    player.style.left = playerX + "px";
+    player.style.top = playerY + "px";
+
+	hagenX = 280;
+	hagenXDirection = 1;
+	hagenY = 20;
+	hagenYDirection = 1;
+	hagen.style.left = hagenX + "px";
+	hagen.style.top = hagenY + "px";
+
+    message.textContent = "";
+
+    gameRunning = true;
+
+    startBtn.disabled = true;
+
+    movePlayer();
+
+    elapsedTime = 0;
+	
+	let timeLeft = 59;
+
+    message.textContent = "Zeit: 59";
+	message.style.color = "white";
+	warning.style.display = "none";
+	hardMode = false;
+
+    gameTimer = setInterval(function(){
+
+        timeLeft--;
+		elapsedTime++;
+		
+        if(elapsedTime >= 30 && !hardMode){
+
+			hardMode = true;
+
+			warning.style.display = "block";
+
+			setTimeout(function(){
+				warning.style.display = "none";
+			},2000);
+
+		}
+
+		if(timeLeft > 0){
+			message.textContent = "Zeit: " + timeLeft;
+		}else{
+			endGame(true);
+		}
+
+	},600);
+	spearTimer = setInterval(function(){
+
+    if(elapsedTime >= 30){
+
+        if(Math.random() < 0.35){ 	// 0.35 chance of throwing 3 spears at once
+            createSpear(-0.2);
+            createSpear(0);
+            createSpear(0.2);
+        }else{
+            createSpear();
+        }
+
+    }else{
+
+        createSpear();
+
+    }
+
+},1000);
+
+};
+</script>
+<br>
+
+<hr>
+
+<section id="story">
+    <h2>Geschichte</h2>
+		<h3>Einleitung</h3>
+		<p>Das Nibelungenlied ist ein deutsches Epos aus dem 13. Jahrhundert, das historische Ereignisse mit der deutschen Heldensage verknüpft. Es erzählt 
+		die Geschichte der Burgunden, ihre historische Niederlage gegen die Hunnen im 5. Jahrhundert sowie die tragischen Folgen des Wunsches der mythischen Königin Kriemhild, 
+		den Tod ihres verstorbenen Gatten Siegfried zu rächen. Das Werk war das erste schriftlich fixierte deutsche Epos und gab den entscheidenden Anstoß für die Entstehung dieses Genres. 
+		Ursprünglich in mittelhochdeutschen vierzeiligen Strophen verfasst,wurde es 1755 wiederentdeckt, entwickelte sich zu einem deutschen Nationalepos und inspirierte 
+		Richard Wagners Opernzyklus "Der Ring des Nibelungen".</p>
+		<h3>Uberblick</h3>
+		<p>Das Nibelungenlied erzählt die Geschichte des Helden Siegfried aus Xanten, der einen Drachen besiegt und anschließend im Drachenblut badet. Dadurch wird er fast unverwundbar; 
+		nur eine kleine Stelle zwischen seinen Schultern bleibt durch ein Lindenblatt ungeschützt. Später reist Siegfried nach Worms, wo er sich in Kriemhild, die Schwester König Gunthers, 
+		verliebt.<br>Um Kriemhild heiraten zu dürfen, hilft Siegfried Gunther dabei, die mächtige Königin Brunhild zu gewinnen. Mithilfe einer Tarnkappe wird er unsichtbar und unterstützt 
+		Gunther heimlich bei den schwierigen Wettkämpfen gegen Brunhild. Nachdem beide Paare geheiratet haben, geraten Kriemhild und Brunhild in Streit. Kriemhild verrät dabei, dass Siegfried 
+		Gunther geholfen hat, Brunhild zu besiegen.<br>Die gedemütigte Brunhild verlangt Rache, und Hagen von Tronje erfährt von Siegfrieds einziger verwundbarer Stelle. Während einer Jagd 
+		nutzt Hagen dieses Geheimnis aus und tötet Siegfried mit einem Speer. Mit seinem Tod endet der erste Teil des Nibelungenlieds und der Weg für Kriemhilds spätere Rache ist bereitet.</p>
+		<h3>Comic-Strip</h3>
+		<p>Hier ist das Geschichte im Stil von einem Comic-Strip:<p>
+			<h4>Szene 1</h4>
+			<img src="https://raw.githubusercontent.com/wbrown-c23/website-image/main/Copilot_20260624_121429.png" alt="Comicszene 1" style="width:300px; height:auto;">
+			<p>Siegfried stellt sich mutig einem furchterregenden Drachen und besiegt das mächtige Ungeheuer in einem erbitterten Kampf. Mit seiner Tapferkeit beweist er 
+			seine außergewöhnliche Stärke und legt den Grundstein für seinen späteren Ruhm als größter Held des Nibelungenlieds.</p>
+			<h4>Szene 2</h4>
+			<img src="https://cdn.imageurlgenerator.com/uploads/7fc1a9f5-3672-4645-af72-938ff1936a5c.png" alt="Comicszene 2" style="width:300px; height:auto;">
+			<p>Nach seinem Sieg badet Siegfried im Blut des Drachen, das ihn nahezu unverwundbar macht. Nur ein Lindenblatt bleibt zwischen seinen Schultern haften, sodass dort eine kleine 
+			verwundbare Stelle zurückbleibt, die später zu seinem Verhängnis wird.</p>
+			<h4>Szene 3</h4>
+			<img src="https://raw.githubusercontent.com/wbrown-c23/website-image/main/Copilot_20260625_095412.png" alt="Comicszene 3" style="width:300px; height:auto;">
+			<p>Siegfried, gehüllt in eine silberne Rüstung und einen wehenden roten Umhang, hebt Kriemhild in seine Arme, während Fackelschein über 
+			die Steinmauern flackert. Sie ist bewusstlos oder in Ohnmacht gefallen und trägt ein weißes, goldverziertes Gewand; ihr Kopf ruht an 
+			seiner Schulter. Hinter ihnen stürmen Soldaten herbei, doch Siegfried schreitet entschlossen und heldenhaft durch das Torbogenportal.</p>
+			<h4>Szene 4</h4>
+			<img src="https://raw.githubusercontent.com/wbrown-c23/website-image/main/Copilot_20260625_095723.png" alt="Comicszene 4" style="width:300px; height:auto;">
+			<p>Gunther steht in der großen Halle von Isenstein und blickt voller Staunen auf Brunhild. Er trägt eine silberne Rüstung und einen roten Umhang; seine Krone fängt den 
+			Schein der Fackeln ein. Brunhild steht ihm stolz in ihrem smaragdgrünen Gewand und der juwelenbesetzten Krone gegenüber und strahlt Kraft und Autorität aus. Die 
+			kunstvolle mittelalterliche Bordüre rahmt den Augenblick wie ein heroisches Tableau ein und unterstreicht den Moment, in dem er von ihr in den Bann gezogen wird.</p>
+			<h4>Szene 5</h4>
+			<img src="https://raw.githubusercontent.com/wbrown-c23/website-image/main/Copilot_20260625_100011.png" alt="Comicszene 5" style="width:300px; height:auto;">
+			<p>Brünhild überwältigt Gunther mit müheloser, geradezu übernatürlicher Kraft, drückt ihn gegen die Wand der Kammer und fesselt ihn dort. Dieser Augenblick hält den 
+			krassen Machtwechsel zwischen den beiden fest: Die Königin steht fest und unbeugsam da, während der König hilflos hängt, überwältigt von ihrer Überlegenheit.</p>
+			<h4>Szene 6</h4>
+			<img src="https://raw.githubusercontent.com/wbrown-c23/website-image/main/Copilot_20260625_100246.png" alt="Comicszene 6" style="width:300px; height:auto;">
+			<p>Siegfried, durch die Tarnkappe unsichtbar gemacht und an Gunthers Stelle tretend, überwältigt Brünhild mit rascher, gewaltiger Kraft. Obwohl unsichtbar, bricht 
+			seine Stärke ihren Widerstand und wendet den Kampf zu Gunthers Gunsten. Die Szene fängt Brünhilds Bestürzung ein, als ihre sonst unübertroffene Kraft sie plötzlich 
+			im Stich lässt – ohne dass sie ahnt, dass es Siegfried und nicht ihr Ehemann ist, der sie bezwungen hat.</p>
+			<h4>Szene 7</h4>
+			<img src="https://raw.githubusercontent.com/wbrown-c23/website-image/refs/heads/main/Copilot_20260629_093714.png" alt="Comicszene 7" style="width:300px; height:auto;">
+			<p>Die Doppelhochzeit von Siegfried und Kriemhild sowie Gunther und Brünhild: Zwei Königspaare stehen unter prunkvollen Bögen und tauschen ihr Eheversprechen aus, 
+			während unten Musiker und Gäste feiern – eine Szene, in der Pracht und Schicksal miteinander verwoben sind.</p>
+			<h4>Szene 8</h4>
+			<img src="https://raw.githubusercontent.com/wbrown-c23/website-image/refs/heads/main/Copilot_20260629_094845.png" alt="Comicszene 8" style="width:300px; height:auto;">
+			<p>Im Fackelschein der Halle beugt sich Kriemhild zu Hagen und enthüllt die verborgene Wahrheit über Siegfrieds Sieg über Brünhild. Es ist ein Geständnis, das Hagens 
+			Entschlusskraft stählt und die kommende Tragödie in Gang setzt.</p>
+			<h4>Szene 9</h4>
+			<img src="https://raw.githubusercontent.com/wbrown-c23/website-image/refs/heads/main/Copilot_20260629_100444.jpg" alt="Comicszene 9" style="width:300px; height:auto;"> <!-- replace image -->
+			<p>Nachdem er erfahren hat, dass Siegfried mithilfe der Tarnkappe Brunhild überwältigt hatte, sinnt Hagen auf Rache und tötet Siegfried, indem er einen Speer auf ihn wirft.<br><br>
+			<i>Soweit reicht unsere Version der Geschichte...</i></p>
+</section>
+
+<hr>
+
+<section id="credits">
+	<h2>Mitwerkende</h2>
+	<p>Diese Website wurde erstellt von:</p>
+	<ul>
+		<li>William Brown</li>
+		<li>Oscar Dalton</li>
+		<li>Thomas Burgoyne</li>
+		<li>Ranveer Sri Raja Kalidindi</li>
+	</ul>
+	<p>die alle Mitglieder der Klasse 9C sind.
+	<b>Vielen Dank für Ihren Besuch auf dieser Website!</b></p>
+</section>
+
+</main>
+
+<a href="#top" class="top-button">Zurück nach oben</a>
+
+<footer>
+    &copy; 2026 KEGS, 9C (c23). Die Bilder wurden mit KI-Unterstützung erstellt.
+</footer>
+
+</body>
+</html>
